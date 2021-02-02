@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_authenticated %}
+<h3>{{ request.user }}</h3>
+Money:{{request.user.wallet}}
+<br>
+	{% for pl in product_list %}
+		<br>{{ pl }} | 
+		кол: {{ pl.quantity }} |
+		цена:{{ pl.price }}  
+		<form method="post" action="{% url 'product_buy' pl.pk %}">
+			{% csrf_token %}
+			{{ form }}
+			<input type="hidden" value="{{pl.pk}}" name="product_pk">
+			<input type="submit" value="купить">
+		</form>
+	{% endfor %}
+{% endif %}
+{% endblock %}

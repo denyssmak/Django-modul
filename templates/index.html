@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+	<h1>Онлайн магазин</h1>
+{% if request.user.is_authenticated %}
+<h3>{{ request.user }}</h3>
+Money:{{request.user.wallet}}
+	<h3><a class="reg" href="{% url 'logout_page' %}">выйти</a></h3>
+{% else %}
+	<h3><a class="reg" href="{% url 'register_page' %}">регистрация</a></h3>
+	<h3><a class="reg" href="{% url 'login_page' %}">авторизация</a></h3>
+{% endif %}
+<a href="{% url 'product_list' %}">просмотр всех товаров</a>
+<br>
+{% if request.user.is_superuser %}
+	<a href="{% url 'create_product' %}">coздание продуктa</a><br>
+	{% for product in product_list %}
+	{{ product }} |
+	кол: {{ product.quantity }} |
+	цена: {{ product.price }}
+		<a href="{% url 'update_product' product.pk %}">изменение продуктa</a><br>
+	{% endfor %}
+		<a href="{% url 'return_product' %}">просмотр возвратов</a>
+{% endif %}
+
+	
+
+{% endblock %}
