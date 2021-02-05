@@ -24,12 +24,17 @@ class Product(models.Model):
 
 
 class Purchase(models.Model):
-	product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='user')
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product')
 	time = models.DateTimeField(auto_now_add=True)
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='product')
-	quantity_purchase = models.IntegerField()
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user')
+	quantity = models.PositiveSmallIntegerField()
+	def __str__(self):
+		return f'{self.product} | {self.quantity}'
 
 
-class Purchase_returns(models.Model):
-	product_return = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_return')
+class PurchaseReturns(models.Model):
+	product_return = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='product_return')
 	product_return_time = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.product_return}'

@@ -1,19 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if request.user.is_authenticated %}
 <h3>{{ request.user }}</h3>
 Money:{{request.user.wallet}}
 <br>
-	{% for pl in product_list %}
-		<br>{{ pl }} | 
-		кол: {{ pl.quantity }} |
-		цена:{{ pl.price }}  
-		<form method="post" action="{% url 'product_buy' pl.pk %}">
-			{% csrf_token %}
-			{{ form }}
-			<input type="hidden" value="{{pl.pk}}" name="product_pk">
-			<input type="submit" value="купить">
-		</form>
+{% if messages %}
+	{% for message in messages %}
+		{{ message|safe }}
 	{% endfor %}
 {% endif %}
+{% if request.user.is_authenticated %}
+	{% if not request.user.is_superuser %}
+		{% for pl in product_list %}
+			<br>{{ pl }} | 
+			кол: {{ pl.quantity }} |
+			цена:{{ pl.price }}
+			<form method="post" action="{% url 'purchase_create' pl.pk %}">
+				{% csrf_token %}
+				{{forma}}
+				<input type="hidden" name="product_pk" value="{{pl.pk}}">
+				<input type="submit" value="Купить" >
+			</form>
+		{% endfor %}
+	{% endif %}
+{% endif %}
+
+	
+
 {% endblock %}

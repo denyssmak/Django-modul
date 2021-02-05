@@ -1,5 +1,5 @@
 from django import forms
-from .models import MyUser, Purchase, Product
+from .models import MyUser, Purchase, Product, PurchaseReturns
 from django.contrib.auth.forms import AuthenticationForm
 
 class AutUserForm(AuthenticationForm, forms.ModelForm):
@@ -40,7 +40,12 @@ class ReturnProductForm(forms.ModelForm):
 		model = Product
 		fields = '__all__'
 
-class BuyProductForm(forms.ModelForm):
+class CreatePurchaseForm(forms.ModelForm):
 	class Meta:
-		model = Product
-		fields =  ['quantity']
+		model = Purchase
+		fields = ['quantity']
+
+class ReturnPurchaseForm(forms.ModelForm):
+	class Meta:
+		model = PurchaseReturns
+		exclude = ['product_return']

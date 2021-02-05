@@ -1,13 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
 	<h1>Онлайн магазин</h1>
+{% if messages %}
+{% for message in messages %}
+	<h2 style="color: red;">{{ message|safe }}</h2>
+{% endfor %}
+{% endif %}
+	{% if request.user.is_authenticated %}
+		{% if not request.user.is_superuser %}
+			{% for pl in product_list %}
+			<br>{{ pl }} | 
+			кол: {{ pl.quantity }} |
+			цена:{{ pl.price }}
+			<form method="post" action="{% url 'purchase_create' pl.pk %}">
+				{% csrf_token %}
+				{{forma}}
+				<input type="hidden" name="product_pk" value="{{pl.pk}}">
+				<input type="submit" value="Купить" >
+			</form>
+			{% endfor %}
+		{% endif %}
+	{% else %}
+		{% for product in product_list %}
+		<br>{{ product }} |
+		кол: {{ product.quantity }} |
+		цена: {{ product.price }}
+		{% endfor %}
+	{% endif %}
 {% if request.user.is_authenticated %}
 <h3>{{ request.user }}</h3>
 Money:{{request.user.wallet}}
-	<h3><a class="reg" href="{% url 'logout_page' %}">выйти</a></h3>
+	<a href="{% url 'my_purchase' %}">мои покупки</a>
+	<h3><a href="{% url 'logout_page' %}">выйти</a></h3>
 {% else %}
-	<h3><a class="reg" href="{% url 'register_page' %}">регистрация</a></h3>
-	<h3><a class="reg" href="{% url 'login_page' %}">авторизация</a></h3>
+	<h3><a href="{% url 'register_page' %}">регистрация</a></h3>
+	<h3><a href="{% url 'login_page' %}">авторизация</a></h3>
 {% endif %}
 <a href="{% url 'product_list' %}">просмотр всех товаров</a>
 <br>
@@ -20,6 +47,7 @@ Money:{{request.user.wallet}}
 		<a href="{% url 'update_product' product.pk %}">изменение продуктa</a><br>
 	{% endfor %}
 		<a href="{% url 'return_product' %}">просмотр возвратов</a>
+
 {% endif %}
 
 	

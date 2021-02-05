@@ -1,5 +1,5 @@
 from django.urls import include, path
-from .views import ProductView, MyloginView, RegisterUserView, MyUserlogout, CreateProductView, UpdateProductView, ReturnProductView, ProductListView, BuyProductView
+from .views import ProductView, MyloginView, RegisterUserView, MyUserlogout, CreateProductView, UpdateProductView, ReturnProductView, ProductListView, PurchasesView, PurchaseReturnsView, PurchasesListView, PurchaseReturnsView, PurchaseReturnsDeleteView, PurchasesReturnsDeleteView
 
 
 urlpatterns = [
@@ -11,5 +11,9 @@ urlpatterns = [
     path('update_product/<int:pk>/', UpdateProductView.as_view(), name='update_product'),
     path('return_product/', ReturnProductView.as_view(), name='return_product'),
     path('product_list/', ProductListView.as_view(), name='product_list'),
-    path('product_buy/<int:pk>/', BuyProductView.as_view(), name='product_buy'),
+    path('purchase_create/<int:pk>/', PurchasesView.as_view(), name='purchase_create'),
+    path('my_purchase/', PurchasesListView.as_view(), name='my_purchase'),
+   	path('return/', PurchaseReturnsView.as_view(), name='return'),
+	path('purchase_return_accept/<int:pk>/', PurchaseReturnsDeleteView.as_view(), name='purchase_return_accept'),									
+	path('purchase_return_reject/<int:pk>/', PurchasesReturnsDeleteView.as_view(), name='purchase_return_reject'),
 ]
