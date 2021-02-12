@@ -17,6 +17,7 @@ class Product(models.Model):
 	description = models.TextField()
 	quantity = models.IntegerField()
 	price = models.IntegerField()
+	photo = models.ImageField()
 
 	def __str__(self):
 		return self.name

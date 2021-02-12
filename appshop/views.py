@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, View
 from .models import MyUser, Product, Purchase, PurchaseReturns
 from django.contrib.auth import authenticate, login
 from .forms import AutUserForm, RegisterUserView, ReturnPurchaseForm, CreateProductViewForm, UpdateProductViewForm, ReturnProductForm, CreatePurchaseForm
@@ -44,7 +44,7 @@ class MyUserlogout(LogoutView):
 class ProductView(ListView):
 	model = Product
 	template_name = 'index.html'
-	extra_context = {'forma':CreatePurchaseForm}
+	extra_context = {'forma':CreatePurchaseForm, 'online':MyUser.objects.all().count() }
 
 
 class ProductListView(ListView):

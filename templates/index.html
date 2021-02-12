@@ -1,14 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Главная страница</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+</head>
+<body>
 {% extends 'base.html' %}
 {% block content %}
-	<h1>Онлайн магазин</h1>
 {% if messages %}
 {% for message in messages %}
 	<h2 style="color: red;">{{ message|safe }}</h2>
 {% endfor %}
 {% endif %}
+
 	{% if request.user.is_authenticated %}
+		<h3>{{ request.user }}</h3>
+		<h3>Money:{{request.user.wallet}}</h3>
 		{% if not request.user.is_superuser %}
 			{% for pl in product_list %}
+				<img width="200px" height="215px" src="/media/{{pl.photo}}">
 			<br>{{ pl }} | 
 			кол: {{ pl.quantity }} |
 			цена:{{ pl.price }}
@@ -28,8 +39,6 @@
 		{% endfor %}
 	{% endif %}
 {% if request.user.is_authenticated %}
-<h3>{{ request.user }}</h3>
-Money:{{request.user.wallet}}
 	<a href="{% url 'my_purchase' %}">мои покупки</a>
 	<h3><a href="{% url 'logout_page' %}">выйти</a></h3>
 {% else %}
@@ -49,7 +58,9 @@ Money:{{request.user.wallet}}
 		<a href="{% url 'return_product' %}">просмотр возвратов</a>
 
 {% endif %}
-
-	
-
+<footer>
+	Зарегистрированых пользователей на сайте: {{ online }}
+</footer>
 {% endblock %}
+</body>
+</html>
